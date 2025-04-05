@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">gazmester</string>
+    <string name="register">Regisztráció</string>
+    <string name="noAccountQuestion">Még nincsen fiókja?</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="emailAddress">E-mail cím</string>
+    <string name="password">Jelszó</string>
+    <string name="loginWithGoogle">Bejelentkezés Google-lel</string>
+    <string name="alreadyHaveAnAccountQuestion">Már van fiókja?</string>
+    <string name="passwordAgain">Jelszó újra</string>
+    <string name="registerWithGoogle">Regisztráció Google-lel</string>
+    <string name="fullName">Teljes név</string>
+    <string name="phoneNumber">Telefonszám</string>
+    <string name="postalAddress">Postai cím</string>
+    <string name="default_web_client_id">430088110730-ulnaitkqq9nuo88r8skjib62ehufkt7d.apps.googleusercontent.com</string>
+    <string name="chooseConsumerType">Fogyasztó típusa</string>
+    <string-array name="consumerType">
+        <item>Magánszemély</item>
+        <item>Vállalkozás</item>
+    </string-array>
 </resources>
