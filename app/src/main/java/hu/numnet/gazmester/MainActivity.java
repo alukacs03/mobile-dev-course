@@ -1,9 +1,9 @@
 package hu.numnet.gazmester;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.credentials.GetCredentialRequest;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,11 +17,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.internal.GoogleSignInOptionsExtensionParcelable;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
     private FirebaseAuth mAuth;
+
 
 
     @Override

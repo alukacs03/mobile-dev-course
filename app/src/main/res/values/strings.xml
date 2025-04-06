@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">gazmester</string>
+    <string name="app_name">GázMester</string>
     <string name="register">Regisztráció</string>
     <string name="noAccountQuestion">Még nincsen fiókja?</string>
     <string name="login">Bejelentkezés</string>
@@ -14,6 +14,7 @@
     <string name="postalAddress">Postai cím</string>
     <string name="default_web_client_id">430088110730-ulnaitkqq9nuo88r8skjib62ehufkt7d.apps.googleusercontent.com</string>
     <string name="chooseConsumerType">Fogyasztó típusa</string>
+    <string name="logout">Kijelentkezés</string>
     <string-array name="consumerType">
         <item>Magánszemély</item>
         <item>Vállalkozás</item>

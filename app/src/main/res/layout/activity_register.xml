@@ -98,16 +98,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordAgainET" />
 
-    <Button
-        android:id="@+id/registerWithGoogleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/registerWithGoogle"
-        android:layout_marginTop="@dimen/registerMarginTop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
-
     <EditText
         android:id="@+id/nameET"
         android:layout_width="wrap_content"

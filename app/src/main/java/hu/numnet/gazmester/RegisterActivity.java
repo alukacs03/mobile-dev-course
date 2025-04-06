@@ -62,6 +62,8 @@ public class RegisterActivity extends AppCompatActivity {
         consumerTypeSpinner.setAdapter(adapter);
         consumerTypeSpinner.setSelection(0);
 
+        // for testing purposes
+        mAuth.signOut();
 
         // Check if the user is already logged in
         if (mAuth.getCurrentUser() != null) {
