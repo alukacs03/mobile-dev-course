@@ -15,6 +15,9 @@
     <string name="default_web_client_id">430088110730-ulnaitkqq9nuo88r8skjib62ehufkt7d.apps.googleusercontent.com</string>
     <string name="chooseConsumerType">Fogyasztó típusa</string>
     <string name="logout">Kijelentkezés</string>
+    <string name="newReport">Új bejelentés</string>
+    <string name="viewReports">Bejelentések megtekintése</string>
+    <string name="editData">Adatok szerkesztése</string>
     <string-array name="consumerType">
         <item>Magánszemély</item>
         <item>Vállalkozás</item>

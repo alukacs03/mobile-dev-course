@@ -3,11 +3,15 @@ package hu.numnet.gazmester;
 
 import android.os.Bundle;
 
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -22,11 +26,12 @@ public class ActionMenu extends AppCompatActivity {
 
     private static final int SECRET_KEY = 99;
 
+    CardView newReportCard;
+    CardView viewReportsCard;
+    CardView editDataCard;
+    CardView logoutCard;
+
     FirebaseAuth mAuth;
-    TextView debugTV;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +45,25 @@ public class ActionMenu extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-        debugTV = findViewById(R.id.debugText);
+        newReportCard = findViewById(R.id.newReportCard);
+        viewReportsCard = findViewById(R.id.viewReportsCard);
+        editDataCard = findViewById(R.id.editDataCard);
+        logoutCard = findViewById(R.id.logoutCard);
 
-        debugTV.setText(
-                "User: " + mAuth.getCurrentUser().getEmail() + "\n" +
-                "UID: " + mAuth.getCurrentUser().getUid() + "\n" +
-                "Provider: " + mAuth.getCurrentUser().getProviderData().get(1).getProviderId() + "\n" +
-                "Token: " + mAuth.getCurrentUser().getIdToken(false).toString()
-        );
+
+        Animation slideInLeft1 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+        Animation slideInLeft2 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+        Animation slideInLeft3 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+        Animation slideInLeft4 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+
+        slideInLeft2.setStartOffset(200); // Delay second card by 200ms
+        slideInLeft3.setStartOffset(400); // Delay third card by 400ms
+        slideInLeft4.setStartOffset(600); // Delay fourth card by 600ms
+
+        newReportCard.startAnimation(slideInLeft1);
+        viewReportsCard.startAnimation(slideInLeft2);
+        editDataCard.startAnimation(slideInLeft3);
+        logoutCard.startAnimation(slideInLeft4);
 
     }
 
@@ -62,4 +78,21 @@ public class ActionMenu extends AppCompatActivity {
 
     }
 
+    public void newReport(View view) {
+        Toast.makeText(this, "Ez még nincsen implementálva", Toast.LENGTH_SHORT).show();
+    }
+
+    public void viewReports(View view) {
+        Toast.makeText(this, "Ez még nincsen implementálva", Toast.LENGTH_SHORT).show();
+    }
+
+    public void editData(View view) {
+        Toast.makeText(this, "Ez még nincsen implementálva", Toast.LENGTH_SHORT).show();
+    }
+
+    public void logout(View view) {
+        mAuth.signOut();
+        Toast.makeText(this, "Sikeresen kijelentkezett", Toast.LENGTH_SHORT).show();
+        finish();
+    }
 }
