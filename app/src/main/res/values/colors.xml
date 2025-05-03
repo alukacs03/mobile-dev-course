@@ -5,4 +5,11 @@
     <color name="green">#4CAF50</color>
     <color name="blue">#00BCD4</color>
     <color name="orange">#FFC107</color>
+    <color name="primary">#2196F3</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1565C0</color>
+    <color name="colorSecondary">#FF9800</color>
+    <color name="colorAccent">#E040FB</color>
+    <color name="card_bg">#FAFAFA</color>
+    <color name="chip_bg">#E3F2FD</color>
 </resources>

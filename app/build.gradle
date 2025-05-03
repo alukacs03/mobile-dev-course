@@ -30,6 +30,8 @@ android {
 }
 
 dependencies {
+    // Add Firebase BOM to align all Firebase library versions
+    implementation platform('com.google.firebase:firebase-bom:33.0.0')
 
     implementation libs.appcompat
     implementation libs.material
@@ -40,6 +42,11 @@ dependencies {
     implementation libs.credentials.play.services.auth
     implementation libs.googleid
     implementation libs.play.services.auth
+    implementation libs.material.v1110
+    // Remove explicit version for Firestore, let BOM manage it
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

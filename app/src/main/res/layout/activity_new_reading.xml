@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="Gázóra lejelentés"
+        app:titleTextColor="@android:color/white"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <!-- Mérőóra száma helyett Spinner -->
+            <TextView
+                android:id="@+id/textMeterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Válassz gázórát:"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerMeters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Mérőóra állása -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutOraAllas"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:hint="Mérőóra állása (m³)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputOraAllas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Leolvasás dátuma -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutDatum"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:hint="Leolvasás dátuma">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputDatum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:inputType="date" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Gázóra fotó gomb -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTakePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gázóra fotó készítése"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:onClick="onTakePhotoClick"
+                app:cornerRadius="12dp"
+                app:iconPadding="8dp"
+                android:paddingVertical="14dp"
+                android:backgroundTint="@color/design_default_color_primary"
+                android:elevation="4dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Fotó előnézet -->
+            <ImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="200dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Fotó előnézet" />
+
+            <!-- Mentés gomb -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lejelentés mentése"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:onClick="saveReport"
+                app:cornerRadius="12dp"
+                app:iconPadding="8dp"
+                android:paddingVertical="14dp"
+                android:backgroundTint="@color/design_default_color_primary"
+                android:elevation="4dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Vissza gomb -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vissza"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:onClick="onBackButtonClick"
+                app:cornerRadius="12dp"
+                app:iconPadding="8dp"
+                android:paddingVertical="14dp"
+                android:backgroundTint="@color/design_default_color_secondary"
+                android:elevation="2dp"
+                android:layout_marginBottom="24dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 package hu.numnet.gazmester;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
@@ -29,6 +30,7 @@ public class ActionMenu extends AppCompatActivity {
     CardView newReportCard;
     CardView viewReportsCard;
     CardView editDataCard;
+    CardView manageMetersCard;
     CardView logoutCard;
 
     FirebaseAuth mAuth;
@@ -48,6 +50,7 @@ public class ActionMenu extends AppCompatActivity {
         newReportCard = findViewById(R.id.newReportCard);
         viewReportsCard = findViewById(R.id.viewReportsCard);
         editDataCard = findViewById(R.id.editDataCard);
+        manageMetersCard = findViewById(R.id.manageMetersCard);
         logoutCard = findViewById(R.id.logoutCard);
 
 
@@ -55,15 +58,18 @@ public class ActionMenu extends AppCompatActivity {
         Animation slideInLeft2 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
         Animation slideInLeft3 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
         Animation slideInLeft4 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+        Animation slideInLeft5 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
 
         slideInLeft2.setStartOffset(200); // Delay second card by 200ms
         slideInLeft3.setStartOffset(400); // Delay third card by 400ms
         slideInLeft4.setStartOffset(600); // Delay fourth card by 600ms
+        slideInLeft5.setStartOffset(800); // Delay fifth card by 800ms
 
         newReportCard.startAnimation(slideInLeft1);
         viewReportsCard.startAnimation(slideInLeft2);
         editDataCard.startAnimation(slideInLeft3);
-        logoutCard.startAnimation(slideInLeft4);
+        manageMetersCard.startAnimation(slideInLeft4);
+        logoutCard.startAnimation(slideInLeft5);
 
     }
 
@@ -79,20 +85,28 @@ public class ActionMenu extends AppCompatActivity {
     }
 
     public void newReport(View view) {
-        Toast.makeText(this, "Ez még nincsen implementálva", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, NewReadingActivity.class);
+        startActivity(intent);
     }
 
     public void viewReports(View view) {
-        Toast.makeText(this, "Ez még nincsen implementálva", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ReadingListActivity.class);
+        startActivity(intent);
     }
 
     public void editData(View view) {
-        Toast.makeText(this, "Ez még nincsen implementálva", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, EditDataActivity.class);
+        startActivity(intent);
     }
 
     public void logout(View view) {
         mAuth.signOut();
         Toast.makeText(this, "Sikeresen kijelentkezett", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    public void manageMeters(View view) {
+        Intent intent = new Intent(this, MeterListActivity.class);
+        startActivity(intent);
     }
 }
