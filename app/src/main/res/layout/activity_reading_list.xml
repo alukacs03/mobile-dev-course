@@ -25,6 +25,25 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/btnPickDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Date" />
+
+            <Button
+                android:id="@+id/btnFilterReadings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter" />
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/readingRecyclerView"
             android:layout_width="match_parent"

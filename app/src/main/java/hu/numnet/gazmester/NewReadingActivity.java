@@ -96,6 +96,13 @@ public class NewReadingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_reading);
 
+        // Request POST_NOTIFICATIONS permission for Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 200);
+            }
+        }
+
         // MaterialToolbar beállítása egységesen a ReadingListActivity-hez
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -141,6 +148,7 @@ public class NewReadingActivity extends AppCompatActivity {
 
         imagePreview = findViewById(R.id.imagePreview);
 
+        Log.d(LOG_TAG, "createNotificationChannel called");
         createNotificationChannel();
         scheduleDailyReminder();
 
@@ -267,6 +275,7 @@ public class NewReadingActivity extends AppCompatActivity {
     }
 
     private void sendSuccessNotification() {
+        Log.d(LOG_TAG, "sendSuccessNotification called");
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -277,6 +286,10 @@ public class NewReadingActivity extends AppCompatActivity {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager == null) {
+            Log.e(LOG_TAG, "NotificationManager is null");
+            return;
+        }
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 

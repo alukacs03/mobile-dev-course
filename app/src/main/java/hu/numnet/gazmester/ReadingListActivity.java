@@ -1,11 +1,13 @@
 package hu.numnet.gazmester;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -20,7 +22,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class ReadingListActivity extends AppCompatActivity {
@@ -29,6 +33,7 @@ public class ReadingListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ReadingAdapter adapter;
     private List<GasMeterReading> readingList = new ArrayList<>();
+    private Date selectedDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +59,24 @@ public class ReadingListActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         loadUserReadings();
+
+        findViewById(R.id.btnPickDate).setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                selectedDate = calendar.getTime();
+                Toast.makeText(this, "Selected date: " + selectedDate.toString(), Toast.LENGTH_SHORT).show();
+            }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+        });
+
+        findViewById(R.id.btnFilterReadings).setOnClickListener(v -> {
+            if (selectedDate != null) {
+                loadFilteredReadingsFromDate(selectedDate);
+            } else {
+                Toast.makeText(this, "Please select a date first", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Handle Up button press
@@ -84,6 +107,62 @@ public class ReadingListActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> Log.e("ReadingListActivity", "Hiba a leolvasások lekérdezésekor", e));
+    }
+
+    private void loadFilteredReadings(int daysInPast) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Nincs bejelentkezve!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        long cutoffDateMillis = System.currentTimeMillis() - (daysInPast * 24L * 60 * 60 * 1000);
+        com.google.firebase.Timestamp cutoffDate = new com.google.firebase.Timestamp(new java.util.Date(cutoffDateMillis));
+        db.collection("readings")
+                .whereEqualTo("userId", user.getUid())
+                .whereGreaterThanOrEqualTo("date", cutoffDate)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    readingList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        GasMeterReading reading = doc.toObject(GasMeterReading.class);
+                        readingList.add(reading);
+                    }
+                    // Sort by date descending (newest first)
+                    Collections.sort(readingList, (a, b) -> b.getDate().compareTo(a.getDate()));
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Log.e("ReadingListActivity", "Hiba a leolvasások lekérdezésekor", e));
+    }
+
+    private void loadFilteredReadingsFromDate(Date selectedDate) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Nincs bejelentkezve!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        Log.d("ReadingListActivity", "Selected date: " + selectedDate);
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String selectedDateString = dateFormat.format(selectedDate);
+        Log.d("ReadingListActivity", "Selected date string: " + selectedDateString);
+        db.collection("readings")
+                .whereEqualTo("userId", user.getUid())
+                .whereGreaterThanOrEqualTo("date", selectedDateString)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Log.d("ReadingListActivity", "Query successful, document count: " + queryDocumentSnapshots.size());
+                    readingList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        GasMeterReading reading = doc.toObject(GasMeterReading.class);
+                        Log.d("ReadingListActivity", "Reading fetched: " + reading);
+                        readingList.add(reading);
+                    }
+                    // Sort by date descending (newest first)
+                    Collections.sort(readingList, (a, b) -> b.getDate().compareTo(a.getDate()));
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Log.e("ReadingListActivity", "Query failed", e));
     }
 
     // RecyclerView Adapter
