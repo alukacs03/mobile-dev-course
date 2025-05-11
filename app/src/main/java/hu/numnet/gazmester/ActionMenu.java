@@ -60,10 +60,10 @@ public class ActionMenu extends AppCompatActivity {
         Animation slideInLeft4 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
         Animation slideInLeft5 = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
 
-        slideInLeft2.setStartOffset(200); // Delay second card by 200ms
-        slideInLeft3.setStartOffset(400); // Delay third card by 400ms
-        slideInLeft4.setStartOffset(600); // Delay fourth card by 600ms
-        slideInLeft5.setStartOffset(800); // Delay fifth card by 800ms
+        slideInLeft2.setStartOffset(200);
+        slideInLeft3.setStartOffset(400);
+        slideInLeft4.setStartOffset(600);
+        slideInLeft5.setStartOffset(800);
 
         newReportCard.startAnimation(slideInLeft1);
         viewReportsCard.startAnimation(slideInLeft2);

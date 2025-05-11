@@ -98,14 +98,12 @@ public class NewReadingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_reading);
 
-        // Request POST_NOTIFICATIONS permission for Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 200);
             }
         }
 
-        // MaterialToolbar beállítása egységesen a ReadingListActivity-hez
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -124,10 +122,9 @@ public class NewReadingActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         inputDatum = findViewById(R.id.inputDatum);
-        inputDatum.setFocusable(false); // Ne nyíljon meg a billentyűzet
-        inputDatum.setClickable(false); // Tegyük olvashatatlanná
+        inputDatum.setFocusable(false);
+        inputDatum.setClickable(false);
 
-        // A dátum előre beállítása a mai napra
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = dateFormat.format(calendar.getTime());
@@ -166,7 +163,6 @@ public class NewReadingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
         if (auth == null) {
             auth = FirebaseAuth.getInstance();
         }
@@ -178,8 +174,6 @@ public class NewReadingActivity extends AppCompatActivity {
 
         getLocation();
 
-        // Helyes gázóra ellenőrzés: csak akkor jelezzen, ha tényleg nincs elem a meterNumbers-ben
-        // Frissítsük a listát minden onStart-nál, és csak a callback-ben ellenőrizzük
         if (metersRef != null) {
             metersRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
                 meterNumbers.clear();
@@ -243,7 +237,6 @@ public class NewReadingActivity extends AppCompatActivity {
             Toast.makeText(this, "Az óraállás csak szám lehet!", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Fotó feltöltés helyett csak helyadatok és egyéb mezők mentése
         saveReadingToFirestore(user, oraSzam, allas, datum, null);
     }
 
@@ -254,13 +247,11 @@ public class NewReadingActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Sikeres mentés!", Toast.LENGTH_SHORT).show();
                     inputOraAllas.setText("");
-                    // inputDatum.setText(""); // Ezt eltávolítottuk, hogy ne törölje a dátumot
-                    imagePreview.setImageResource(R.drawable.placeholder_image); // Restore placeholder image
+                    imagePreview.setImageResource(R.drawable.placeholder_image);
                     photoBitmap = null;
-                    sendSuccessNotification(); // Értesítés küldése
+                    sendSuccessNotification();
                 })
                 .addOnFailureListener(e -> {
-                    // Offline mentés, ha nincs internet
                     saveReadingOffline(reading);
                     scheduleSyncJob();
                     Toast.makeText(this, "Hiba történt a mentéskor! Offline mentés.", Toast.LENGTH_SHORT).show();
@@ -398,7 +389,6 @@ public class NewReadingActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             photoBitmap = (Bitmap) extras.get("data");
             imagePreview.setImageBitmap(photoBitmap);
-            // --- Gázóra fotó mentése az eszközre ---
             if (photoBitmap != null) {
                 savePhotoToGallery(photoBitmap);
             }
@@ -420,7 +410,6 @@ public class NewReadingActivity extends AppCompatActivity {
                 Toast.makeText(this, "Hiba a fotó mentésekor!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            // Régi Android verziókhoz
             String savedImageURL = MediaStore.Images.Media.insertImage(
                     getContentResolver(), bitmap, displayName, "Gázóra fotó");
             if (savedImageURL != null) {

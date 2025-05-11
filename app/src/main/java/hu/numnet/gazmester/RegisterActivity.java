@@ -62,10 +62,8 @@ public class RegisterActivity extends AppCompatActivity {
         consumerTypeSpinner.setAdapter(adapter);
         consumerTypeSpinner.setSelection(0);
 
-        // for testing purposes
         mAuth.signOut();
 
-        // Check if the user is already logged in
         if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(this, ActionMenu.class);
             intent.putExtra("SECRET_KEY", 99);
@@ -99,7 +97,6 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        // If sign in fails, display a message to the user.
                         passwordET.setError("Authentication failed.");
                         Toast.makeText(this, passwordET.getError(), Toast.LENGTH_SHORT).show();
                     }

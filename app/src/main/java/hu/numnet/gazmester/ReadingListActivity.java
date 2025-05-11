@@ -42,11 +42,9 @@ public class ReadingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_list);
 
-        // Set up MaterialToolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Enable the Up button
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -97,7 +95,6 @@ public class ReadingListActivity extends AppCompatActivity {
         });
     }
 
-    // Handle Up button press
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -120,7 +117,6 @@ public class ReadingListActivity extends AppCompatActivity {
                         GasMeterReading reading = doc.toObject(GasMeterReading.class);
                         readingList.add(reading);
                     }
-                    // Sort by date descending (newest first)
                     Collections.sort(readingList, (a, b) -> b.getDate().compareTo(a.getDate()));
                     adapter.notifyDataSetChanged();
                 })
@@ -212,7 +208,6 @@ public class ReadingListActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("ReadingListActivity", "Query failed", e));
     }
 
-    // RecyclerView Adapter
     private static class ReadingAdapter extends RecyclerView.Adapter<ReadingAdapter.ViewHolder> {
         private List<GasMeterReading> readings;
 
@@ -254,5 +249,4 @@ public class ReadingListActivity extends AppCompatActivity {
         }
     }
 
-    // TODO: Szerkesztés és törlés funkciók hozzáadása
 }
