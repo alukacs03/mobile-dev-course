@@ -34,6 +34,8 @@ public class ReadingListActivity extends AppCompatActivity {
     private ReadingAdapter adapter;
     private List<GasMeterReading> readingList = new ArrayList<>();
     private Date selectedDate;
+    private Date startDate;
+    private Date endDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,18 +62,34 @@ public class ReadingListActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         loadUserReadings();
 
-        findViewById(R.id.btnPickDate).setOnClickListener(v -> {
+        findViewById(R.id.startDatePickerET).setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth);
-                selectedDate = calendar.getTime();
-                Toast.makeText(this, "Selected date: " + selectedDate.toString(), Toast.LENGTH_SHORT).show();
+                startDate = calendar.getTime();
+                java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = dateFormat.format(startDate);
+                ((EditText) findViewById(R.id.startDatePickerET)).setText(formattedDate);
+            }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+        });
+
+        findViewById(R.id.endDatePickerET).setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                endDate = calendar.getTime();
+                java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = dateFormat.format(endDate);
+                ((EditText) findViewById(R.id.endDatePickerET)).setText(formattedDate);
             }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
 
         findViewById(R.id.btnFilterReadings).setOnClickListener(v -> {
-            if (selectedDate != null) {
+            if (startDate != null && endDate != null) {
+                loadFilteredReadingsBetweenDates(startDate, endDate);
+            } else if (selectedDate != null) {
                 loadFilteredReadingsFromDate(selectedDate);
             } else {
                 Toast.makeText(this, "Please select a date first", Toast.LENGTH_SHORT).show();
@@ -159,6 +177,35 @@ public class ReadingListActivity extends AppCompatActivity {
                         readingList.add(reading);
                     }
                     // Sort by date descending (newest first)
+                    Collections.sort(readingList, (a, b) -> b.getDate().compareTo(a.getDate()));
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Log.e("ReadingListActivity", "Query failed", e));
+    }
+
+    private void loadFilteredReadingsBetweenDates(Date startDate, Date endDate) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Nincs bejelentkezve!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String startDateString = dateFormat.format(startDate);
+        String endDateString = dateFormat.format(endDate);
+
+        db.collection("readings")
+                .whereEqualTo("userId", user.getUid())
+                .whereGreaterThanOrEqualTo("date", startDateString)
+                .whereLessThanOrEqualTo("date", endDateString)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    readingList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        GasMeterReading reading = doc.toObject(GasMeterReading.class);
+                        readingList.add(reading);
+                    }
                     Collections.sort(readingList, (a, b) -> b.getDate().compareTo(a.getDate()));
                     adapter.notifyDataSetChanged();
                 })

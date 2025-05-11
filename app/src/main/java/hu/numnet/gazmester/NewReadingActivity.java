@@ -38,6 +38,8 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -123,23 +125,13 @@ public class NewReadingActivity extends AppCompatActivity {
 
         inputDatum = findViewById(R.id.inputDatum);
         inputDatum.setFocusable(false); // Ne nyíljon meg a billentyűzet
-        inputDatum.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
+        inputDatum.setClickable(false); // Tegyük olvashatatlanná
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    NewReadingActivity.this,
-                    (view, year1, monthOfYear, dayOfMonth) -> {
-                        String formattedDate = String.format("%04d-%02d-%02d", year1, monthOfYear + 1, dayOfMonth);
-                        inputDatum.setText(formattedDate);
-                    },
-                    year, month, day
-            );
-
-            datePickerDialog.show();
-        });
+        // A dátum előre beállítása a mai napra
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String currentDate = dateFormat.format(calendar.getTime());
+        inputDatum.setText(currentDate);
 
         spinnerMeters = findViewById(R.id.spinnerMeters);
         metersAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, meterNumbers);
@@ -147,6 +139,7 @@ public class NewReadingActivity extends AppCompatActivity {
         spinnerMeters.setAdapter(metersAdapter);
 
         imagePreview = findViewById(R.id.imagePreview);
+        imagePreview.setImageResource(R.drawable.placeholder_image); // Helyőrző kép beállítása
 
         Log.d(LOG_TAG, "createNotificationChannel called");
         createNotificationChannel();
@@ -261,8 +254,8 @@ public class NewReadingActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Sikeres mentés!", Toast.LENGTH_SHORT).show();
                     inputOraAllas.setText("");
-                    inputDatum.setText("");
-                    imagePreview.setImageBitmap(null);
+                    // inputDatum.setText(""); // Ezt eltávolítottuk, hogy ne törölje a dátumot
+                    imagePreview.setImageResource(R.drawable.placeholder_image); // Restore placeholder image
                     photoBitmap = null;
                     sendSuccessNotification(); // Értesítés küldése
                 })

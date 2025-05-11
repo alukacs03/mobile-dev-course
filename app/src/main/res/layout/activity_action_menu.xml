@@ -119,7 +119,7 @@
                 <ImageView
                     android:layout_width="96dp"
                     android:layout_height="96dp"
-                    android:src="@drawable/edit_data"
+                    android:src="@drawable/edit_user"
                     android:layout_gravity="center_horizontal"
                     />
 
@@ -160,7 +160,7 @@
                 <ImageView
                     android:layout_width="96dp"
                     android:layout_height="96dp"
-                    android:src="@drawable/ic_baseline_settings_ethernet_24"
+                    android:src="@drawable/edit_data"
                     android:layout_gravity="center_horizontal" />
 
                 <TextView

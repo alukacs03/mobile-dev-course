@@ -31,17 +31,45 @@
             android:orientation="horizontal"
             android:padding="16dp">
 
-            <Button
-                android:id="@+id/btnPickDate"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/startDatePickerInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Pick Date" />
+                android:layout_weight="1"
+                android:hint="Kezdő dátum">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/startDatePickerET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/endDatePickerInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:hint="Végső dátum">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/endDatePickerET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btnFilterReadings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Filter" />
+                android:layout_marginStart="8dp"
+                android:text="Szűrés" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
